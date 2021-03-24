@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "commonjs",
+    "lib": [
+      "es2018"
+    ],
+    "outDir": "./build",
+    "sourceMap": false,
+    "removeComments": false,
+    "allowJs": true,
+    "types": [],
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {},
+    "esModuleInterop": true,
+  },
+  "include": [
+    "src/**/*",
+    "app-env.d.ts"
+, "../server/src/controllers", "../server/src/routes"  ]
+}
