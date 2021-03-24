@@ -24,20 +24,6 @@ const baseDbConfig = {
 export const dbConfig: any = {
   development: { ...baseDbConfig },
   test: { ...baseDbConfig },
-  staging: {
-    ...baseDbConfig,
-    pool: {
-      min: 2,
-      max: 10,
-    },
-  },
-  production: {
-    ...baseDbConfig,
-    pool: {
-      min: 2,
-      max: 10,
-    },
-  },
 };
 
 export const dbEnvConfig = dbConfig[process.env.NODE_ENV || "development"];
