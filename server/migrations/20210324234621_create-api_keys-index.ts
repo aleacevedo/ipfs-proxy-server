@@ -7,5 +7,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.raw(`DROP UNIQUE INDEX "unique_partial_api_keys_user_id"`);
+  return knex.schema.raw(`DROP INDEX "unique_partial_api_keys_user_id"`);
 }

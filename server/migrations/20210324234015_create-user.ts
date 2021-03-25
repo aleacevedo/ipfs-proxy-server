@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<any> {
       .defaultTo(knex.raw("uuid_generate_v4()")),
       table.string("email").notNullable().unique(),
       table.string("username").notNullable().unique(),
-      table.string("secret_password").notNullable(),
+      table.string("secured_password").notNullable(),
       table.timestamp("created_at").notNullable(),
       table.timestamp("updated_at").notNullable();
   });

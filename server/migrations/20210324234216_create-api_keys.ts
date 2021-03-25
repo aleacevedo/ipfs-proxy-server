@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<any> {
       .notNullable()
       .defaultTo(knex.raw("uuid_generate_v4()")),
       table.boolean("active").notNullable().defaultTo(true),
-      table.string("user_id").references("id").inTable("user"),
+      table.uuid("user_id").references("id").inTable("users"),
       table.timestamp("created_at").notNullable(),
       table.timestamp("updated_at").notNullable();
   });
