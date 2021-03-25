@@ -24,9 +24,10 @@
     "baseUrl": "./src",
     "paths": {},
     "esModuleInterop": true,
+    "suppressImplicitAnyIndexErrors": true,
   },
   "include": [
     "src/**/*",
-    "app-env.d.ts"
-, "../server/src/controllers", "../server/src/routes"  ]
+    "./custom.d.ts"
+]
 }
