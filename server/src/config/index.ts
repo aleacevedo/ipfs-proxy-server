@@ -12,6 +12,7 @@ dotenv.config({ path });
 export const SERVER_PORT = process.env.SERVER_PORT || 3000;
 export const IPFS_URL = process.env.IPFS_URL;
 export const DATABASE_URL = process.env.DATABASE_URL;
+export const JWT_SECRET = process.env.JWT_SECRET;
 
 const baseDbConfig = {
   client: "postgresql",

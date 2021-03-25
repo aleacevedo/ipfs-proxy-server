@@ -7,7 +7,7 @@ export class User extends AppModel {
   id!: string;
   email!: string;
   username!: string;
-  secure_password!: string;
+  securedPassword!: string;
   readonly createdAt!: Date;
   readonly updatedAt!: Date;
 
