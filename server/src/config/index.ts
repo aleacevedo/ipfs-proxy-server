@@ -18,7 +18,7 @@ const baseDbConfig = {
   client: "postgresql",
   connection: DATABASE_URL,
   migrations: {
-    tableName: "backend_migrations",
+    tableName: "ipfs_server_migrations",
   },
 };
 

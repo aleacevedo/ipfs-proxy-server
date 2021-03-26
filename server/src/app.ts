@@ -15,6 +15,8 @@ Model.knex(knex);
 
 const app = express();
 
+app.use(express.json());
+
 app.use(async function (req, res, next) {
   next();
 });

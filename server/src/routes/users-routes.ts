@@ -1,4 +1,5 @@
 import express from "express";
+import { checkSchema } from "express-validator";
 
 import { authenticate, create } from "../controllers/users";
 

@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 
-import { ApiKey, User } from "models";
+import { ApiKey, User } from "../models";
 
 export const create: RequestHandler = async ({ user, ...req }, res) => {
   if (!user) return res.status(400).send();
@@ -9,14 +9,14 @@ export const create: RequestHandler = async ({ user, ...req }, res) => {
 };
 
 export const modify: RequestHandler = async ({ user, ...req }, res) => {
-  if (!req.query.id || typeof req.query.id !== "string")
+  if (!req.params.id || typeof req.params.id !== "string")
     return res.status(400).send();
   const apiKey = await ApiKey.query().where({
-    id: req.query.id,
+    id: req.params.id,
     userId: user.id,
   });
   if (!apiKey.length) return res.status(404).send();
-  ApiKey.query().findById(req.query.id).patch(req.params);
+  ApiKey.query().findById(req.params.id).patch(req.params);
   return res.status(200).send();
 };
 
