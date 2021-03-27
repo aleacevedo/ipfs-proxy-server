@@ -4,8 +4,8 @@ import { ApiKey, User } from "../models";
 
 export const create: RequestHandler = async ({ user, ...req }, res) => {
   if (!user) return res.status(400).send();
-  await ApiKey.query().insert({ userId: user.id });
-  return res.status(201).send();
+  const apiKey = await ApiKey.query().insert({ userId: user.id });
+  return res.status(201).send({ apiKey });
 };
 
 export const modify: RequestHandler = async ({ user, ...req }, res) => {
