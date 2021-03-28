@@ -2,12 +2,11 @@ import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
 import { IPFS_URL } from "./config";
+import redisLogger from "./middlewares/redis-logger";
 
 const app = express();
 
-app.use(async function (req, res, next) {
-  next();
-});
+app.use();
 
 app.get("/health", (_req, res) => res.status(200).send());
 

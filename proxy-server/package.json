@@ -20,6 +20,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6",
+    "knex": "^0.21.17",
+    "objection": "^2.2.15",
     "path": "^0.12.7"
   },
   "devDependencies": {
