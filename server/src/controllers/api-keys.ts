@@ -17,8 +17,8 @@ export const modify: RequestHandler = async ({ user, ...req }, res) => {
     userId: user.id,
   });
   if (!apiKey.length) return res.status(404).send();
-  ApiKey.query().findById(req.params.id).patch(req.params);
-  return res.status(200).send();
+  const updated = await ApiKey.query().findById(req.params.id).patch(req.body);
+  return res.status(200).send({ updated });
 };
 
 export const logs: RequestHandler = async ({ user, ...req }, res) => {
@@ -29,12 +29,25 @@ export const logs: RequestHandler = async ({ user, ...req }, res) => {
   return get(apiKey.id, (error, message) => {
     if (error) return res.status(500).send(error);
 
-    return res.status(200).send({ logs: message });
+    return res
+      .status(200)
+      .send({ logs: message?.map((log) => JSON.parse(log)) });
   });
 };
 
 export const index: RequestHandler = async ({ user, ...req }, res) => {
-  const apiKeys = await (await User.query().findById(user.id)).getApiKeys();
+  const apiKeys = await ApiKey.query()
+    .where({ userId: user.id })
+    .orderBy([{ column: "createdAt", order: "desc" }]);
 
   return res.status(200).send({ apiKeys });
+};
+
+export const active: RequestHandler = async ({ user, ...req }, res) => {
+  const activeApiKey = await ApiKey.query().findOne({
+    userId: user.id,
+    active: true,
+  });
+
+  return res.status(200).send({ activeApiKey });
 };
