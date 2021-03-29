@@ -1,30 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Container, Card, CardBody, Row, Button } from "shards-react";
 
-export function Home(user) {
-  if (!user) return null;
+import PageTitle from "../layouts/PageTitle";
+import {
+  createApiKey,
+  desactivateApiKey,
+  getActiveApiKey,
+} from "../services/backend";
 
-  const createApiKey = () => {};
+export default function Home() {
+  const [activeApiKey, setActiveApiKey] = useState(null);
 
-  const desactivateAndCreateApiKey = () => {
-    createApiKey();
+  useEffect(() => {
+    getActiveApiKey().then((response) => {
+      if (response.status !== 200) return;
+      setActiveApiKey(response.data.activeApiKey);
+    });
+  }, []);
+
+  const createApiKeyHandler = () => {
+    createApiKey().then((response) => {
+      if (response.status !== 201) return;
+      setActiveApiKey(response.data.apiKey);
+    });
+  };
+
+  const desactivateAndCreateApiKeyHandler = async () => {
+    desactivateApiKey(activeApiKey.id).then((response) => {
+      if (response.status !== 200) return;
+      createApiKeyHandler();
+    });
   };
 
   return (
-    <div>
-      {user.apiKey ? (
-        <div>
-          <p>{`Your active api-key is: ${user.apiKey}`}</p>
-          <button onClick={desactivateAndCreateApiKey}>
-            Create a new api-key and desactivate old one
-          </button>
-        </div>
-      ) : (
-        <div>
-          <p>You don not have an apy key, create one please</p>
-          <button onClick={createApiKey}>Create api-key</button>
-        </div>
-      )}
-      <button>Show all api-keys</button>
-    </div>
+    <Container fluid>
+      <Row className="page-header py-4" noGutters>
+        <PageTitle className="text-sm-left" sm="4" subtitle="" title="HOME" />
+      </Row>
+      <Card>
+        <CardBody>
+          <div>
+            {activeApiKey ? (
+              <div>
+                <p>{`Your active api-key is: ${activeApiKey.id}`}</p>
+                <Button onClick={desactivateAndCreateApiKeyHandler}>
+                  Create a new api-key and desactivate old one
+                </Button>
+              </div>
+            ) : (
+              <div>
+                <p>You don not have an apy key, create one please</p>
+                <Button onClick={createApiKeyHandler}>Create api-key</Button>
+              </div>
+            )}
+          </div>
+        </CardBody>
+      </Card>
+    </Container>
   );
 }

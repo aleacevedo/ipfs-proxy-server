@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+import { me } from "../services/backend";
 
 export const AuthContext = React.createContext({
   authenticated: null,
@@ -8,21 +10,22 @@ export const AuthContext = React.createContext({
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState({ authenticated: null, user: null });
   const { authenticated } = auth;
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_BACKEND_APOLLO_URL}/me`, {
-  //     credentials: "include",
-  //   })
-  //     .then((r) => {
-  //       if (r.status !== 200) {
-  //         return setAuth({ authenticated: false });
-  //       }
-  //       r.json().then((user) => setAuth({ authenticated: true, user: user }));
-  //       return null;
-  //     })
-  //     .catch(() => setAuth({ authenticated: false }));
-  // }, []);
+  useEffect(() => {
+    me()
+      .then((r) => {
+        if (r.status !== 200) {
+          return setAuth({ authenticated: false });
+        }
+        setAuth({ authenticated: true, user: r.data });
+        return null;
+      })
+      .catch((error) => {
+        console.log(error);
+        setAuth({ authenticated: false });
+      });
+  }, []);
 
-  //if (authenticated === null) return null;
+  if (authenticated === null) return null;
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 

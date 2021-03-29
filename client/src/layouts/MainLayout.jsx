@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, CardBody, Row, Col } from "shards-react";
+import { Container, Row, Col } from "shards-react";
 
 import MainSidebar from "./MainSidebar/MainSidebar";
 

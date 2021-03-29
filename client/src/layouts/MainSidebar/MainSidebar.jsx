@@ -2,7 +2,6 @@ import React from "react";
 import classNames from "classnames";
 import { Col } from "shards-react";
 
-import SidebarMainNavbar from "./SidebarMainNavbar";
 import SidebarNavItems from "./SidebarNavItems";
 
 const MainSidebar = () => {

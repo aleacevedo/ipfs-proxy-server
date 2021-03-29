@@ -1,12 +1,51 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Container, Card, CardBody, Row, Col } from "shards-react";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Card,
+  CardBody,
+  Row,
+  Badge,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Button,
+} from "shards-react";
+import ReactJson from "react-json-view";
 
 import PageTitle from "../layouts/PageTitle";
-import MainLayout from "../layouts/MainLayout";
+import { getApiKeys, getLogs } from "../services/backend";
 
-export default function ApiKeys({ apiKeys }) {
-  apiKeys = [];
+export default function ApiKeys() {
+  const [apiKeys, setApiKeys] = useState([]);
+  const [selectedApiKey, setSelectedApiKey] = useState(undefined);
+  const [logs, setLogs] = useState(undefined);
+  const [openModal, setOpenModal] = useState(false);
+
+  const jsonViewProps = {
+    name: null,
+    indentWidth: 2,
+    displayObjectSize: false,
+    displayDataTypes: false,
+    enableClipboard: false,
+  };
+
+  const toggleModal = () => setOpenModal(!openModal);
+
+  useEffect(() => {
+    getApiKeys().then((response) => {
+      if (response.status !== 200) return;
+      setApiKeys(response.data.apiKeys);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!selectedApiKey) return;
+    getLogs(selectedApiKey.id).then((response) => {
+      if (response.status !== 200) return;
+      setLogs({ logs: response.data.logs });
+    });
+  }, [selectedApiKey]);
+
   return (
     <Container fluid>
       <Row className="page-header py-4" noGutters>
@@ -37,8 +76,14 @@ export default function ApiKeys({ apiKeys }) {
               {apiKeys.map((apiKey) => {
                 return (
                   <tr key={apiKey.id}>
-                    <td>apiKey.id</td>
-                    <td>apiKey.activate</td>
+                    <td>{apiKey.id}</td>
+                    <td>
+                      {apiKey.active ? (
+                        <Badge theme="success">Si</Badge>
+                      ) : (
+                        <Badge theme="danger">No</Badge>
+                      )}
+                    </td>
                     <td>
                       {new Date(apiKey.createdAt).toLocaleString("es", {
                         year: "numeric",
@@ -48,7 +93,14 @@ export default function ApiKeys({ apiKeys }) {
                     </td>
                     <React.Fragment>
                       <td>
-                        <Link to={`logs/${apiKey.id}`}>Ver</Link>
+                        <Button
+                          onClick={() => {
+                            setSelectedApiKey(apiKey);
+                            setOpenModal(true);
+                          }}
+                        >
+                          Ver
+                        </Button>
                       </td>
                     </React.Fragment>
                   </tr>
@@ -57,7 +109,15 @@ export default function ApiKeys({ apiKeys }) {
             </tbody>
           </table>
         </CardBody>
-      </Card>
+      </Card>{" "}
+      <Modal open={openModal} toggle={toggleModal} scrollable={true}>
+        <ModalHeader>{`Logs of ${
+          selectedApiKey && selectedApiKey.id
+        }`}</ModalHeader>
+        <ModalBody>
+          <ReactJson {...jsonViewProps} src={logs} />
+        </ModalBody>
+      </Modal>
     </Container>
   );
 }

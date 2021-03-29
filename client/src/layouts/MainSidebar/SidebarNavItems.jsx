@@ -1,16 +1,12 @@
 import React from "react";
-import { Nav, NavItem, NavLink } from "shards-react";
-import styled from "styled-components";
+import { Nav } from "shards-react";
 
 import SidebarNavItem from "./SidebarNavItem";
 
-const FixedWidthLink = styled(NavLink)`
-  width: 1vw;
-`;
-
 const items = [
-  { value: "Home", to: "/" },
+  { value: "Home", to: "/home" },
   { value: "Api-Keys", to: "/api-keys" },
+  { value: "LogOut", to: "/logout" },
 ];
 
 const SidebarNavItems = () => {

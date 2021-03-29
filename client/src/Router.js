@@ -1,24 +1,31 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import ApiKeys from "./components/ApiKeys";
-import { Home } from "./components/Home";
+import Home from "./components/Home";
+import LogIn from "./components/LogIn";
+import LogOut from "./components/LogOut";
+import SignUp from "./components/SignUp";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
+
 import MainLayout from "./layouts/MainLayout";
 
-function PrivateRoutes() {
-  // const { authenticated, user } = useAuth();
+const RedirectToHome = () => <Redirect to="/home" />;
 
-  // if (authenticated === null) return null;
-  // if (authenticated === false) {
-  //   window.location.href = `${process.env.REACT_APP_LOGIN_URL}?redirect=${window.location}`;
-  //   return null;
-  // }
+function PrivateRoutes() {
+  const { authenticated } = useAuth();
+
+  if (authenticated === null) return null;
+  if (authenticated === false) {
+    window.location.href = `${process.env.REACT_APP_LOGIN_URL}?redirect=${window.location}`;
+    return null;
+  }
 
   return (
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" component={RedirectToHome} />
+      <Route exact path="/home" component={Home} />
       <Route exact path="/api-keys" component={ApiKeys} />
-      <Route path="/logs/:id" />
+      <Route path="/logout" component={LogOut} />
     </Switch>
   );
 }
@@ -26,8 +33,8 @@ function PrivateRoutes() {
 function PublicRoutes() {
   return (
     <Switch>
-      <Route exact path="/login" />
-      <Route exact path="/sign-up" />
+      <Route exact path="/login" component={LogIn} />
+      <Route exact path="/signup" component={SignUp} />
       <Route path="*" component={PrivateRoutes} />
     </Switch>
   );

@@ -1,6 +1,9 @@
-import logo from "./logo.svg";
+import dotenv from "dotenv";
+
 import "./App.css";
 import Router from "./Router";
+
+dotenv.config();
 
 function App() {
   return <Router />;
