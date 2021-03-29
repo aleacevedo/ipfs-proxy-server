@@ -8,5 +8,5 @@ const redisClient = redis.createClient({
 });
 
 export const append = (id: string, message: any) => {
-  return redisClient.append(id, message);
+  return redisClient.lpush(id, message);
 };

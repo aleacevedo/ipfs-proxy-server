@@ -9,7 +9,9 @@ const redisClient = redis.createClient({
 
 export const get = (
   id: string,
-  callback: (error: any, message: string | null) => void
+  callback: (error: any, message: string[] | null) => void
 ) => {
-  return redisClient.get(id, callback);
+  return redisClient.llen(id, (error, len) => {
+    return redisClient.lrange(id, 0, len, callback);
+  });
 };

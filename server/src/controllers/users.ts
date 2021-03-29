@@ -1,6 +1,6 @@
 import { RequestHandler, response } from "express";
 
-import { User } from "../models";
+import { ApiKey, User } from "../models";
 import { hash, match } from "../services/crypto";
 import { encode } from "../services/jwt";
 
@@ -11,9 +11,8 @@ const sanitizeUserParams = (body: Record<string, any>) => ({
 
 export const authenticate: RequestHandler = async (req, res) => {
   const user = await User.query()
-    .where({ email: req.body.email })
-    .orWhere({ username: req.body.username })
-    .skipUndefined();
+    .where({ email: req.body.emailOrUsername })
+    .orWhere({ username: req.body.emailOrUsername });
   if (user.length !== 1) return res.status(400).send();
   if (!match(req.body.password, user[0].securedPassword))
     return res.status(401).send();
@@ -29,8 +28,18 @@ export const create: RequestHandler = async (req, res) => {
       securedPassword,
       ...userParams,
     });
-    return res.status(201).send({ newUser });
+    const token = await encode({ user: newUser });
+    return res.status(201).send({ newUser, token });
   } catch (error) {
     return res.status(500).send(error);
   }
+};
+
+export const me: RequestHandler = async ({ user, ...req }, res) => {
+  const apiKeys = await user.getApiKeys();
+  const activeApiKey = await ApiKey.query().findOne({
+    userId: user.id,
+    active: true,
+  });
+  res.status(200).send({ ...user, apiKeys, activeApiKey });
 };
