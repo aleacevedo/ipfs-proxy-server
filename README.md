@@ -12,7 +12,7 @@ This proyect provide a proxy for IPFS node thar have the feature of log any requ
 
 ### FrontEnd
 
-You can navigate to http://localhost:3000 where you will find the devoloped front-end
+You can navigate to http://localhost:3000 where you will find the developed front-end
 
 ### Proxy
 
