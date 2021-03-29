@@ -26,7 +26,7 @@ export class User extends AppModel {
         modelClass: path.join(__dirname, "api-key"),
         join: {
           from: "users.id",
-          to: "api-key.user_id",
+          to: "api_keys.user_id",
         },
       },
     };

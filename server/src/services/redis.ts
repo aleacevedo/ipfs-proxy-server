@@ -7,6 +7,9 @@ const redisClient = redis.createClient({
   port: Number(REDIS_PORT),
 });
 
-export const append = (id: string, message: any) => {
-  return redisClient.append(id, message);
+export const get = (
+  id: string,
+  callback: (error: any, message: string | null) => void
+) => {
+  return redisClient.get(id, callback);
 };

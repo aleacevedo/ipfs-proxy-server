@@ -24,8 +24,8 @@ export class ApiKey extends AppModel {
         relation: Model.BelongsToOneRelation,
         modelClass: path.join(__dirname, "user"),
         join: {
-          from: "api-key.user_id",
-          to: "user.id",
+          from: "api_keys.user_id",
+          to: "users.id",
         },
       },
     };

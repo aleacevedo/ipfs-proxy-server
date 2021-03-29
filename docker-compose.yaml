@@ -19,6 +19,8 @@ services:
       - DATABASE_URL=postgresql://ipfs:ipfs@db/ipfs
       - SERVER_PORT=4000
       - JWT_SECRET=SUPER_SECRET
+      - REDIS_URL=http://redis
+      - REDIS_PORT=6379
     ports:
       - "4000:4000"
 
@@ -31,6 +33,8 @@ services:
       - DATABASE_URL=postgresql://ipfs:ipfs@db/ipfs
       - SERVER_PORT=5000
       - IPFS_URL=http://ipfs:5001
+      - REDIS_URL=http://redis
+      - REDIS_PORT=6379
     ports:
       - "5000:5000"
 
@@ -47,6 +51,9 @@ services:
     image: ipfs/go-ipfs
     environment:
       - IPFS_PROFILE=server
+
+  redis:
+    image: redis
 
 volumes:
   db-postgresd:
